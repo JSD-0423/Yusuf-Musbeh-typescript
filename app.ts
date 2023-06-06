@@ -1,10 +1,8 @@
 import express, {Express, NextFunction, Request, Response} from "express";
+import {router as userRouter} from "./routes/user-route";
 
 
 const app: Express = express();
-app.get("/", (request: Request, response: Response, next: NextFunction) => {
-    console.log("Hello world");
-    response.send("Ending response");
-})
+app.use(userRouter)
 
 app.listen(3000)
