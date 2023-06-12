@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import path from "path";
-import { Book } from "../models/book";
+// import { Book } from "../models/book";
 const FILEPATH: string = path.join(__dirname, "..", "data", "books.json");
-const getData = (): Book[] => {
+const getData = () => {
   const isExist: boolean = fs.existsSync(FILEPATH);
-  let books: Book[] = [];
+  let books = [];
   if (!isExist) {
     fs.writeFileSync(FILEPATH, "[]");
   } else {
