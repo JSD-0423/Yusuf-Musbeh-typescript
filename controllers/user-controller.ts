@@ -28,6 +28,15 @@ const getBooks = async (
       .json({ statusCode: 500, error: "Internal server error" });
   }
 };
+const getBookById = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const id: string = request.params.id;
+  const book = await Book.findByPk(id);
+  response.status(200).json(book);
+};
 
 const postBooks = async (
   request: Request,
@@ -49,4 +58,4 @@ const postBooks = async (
   response.json({ book });
 };
 
-export { getBooks, postBooks };
+export { getBooks, postBooks, getBookById };
