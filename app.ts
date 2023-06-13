@@ -4,6 +4,7 @@ import { authenticateConnection } from "./db/connection";
 import { dbInit } from "./db/dbInit";
 
 const app: Express = express();
+app.use(express.json());
 app.use(userRouter);
 
 dbInit();
