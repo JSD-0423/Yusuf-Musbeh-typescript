@@ -1,28 +1,62 @@
-import { DataTypes } from "sequelize";
+import {DataTypes, Model} from "sequelize";
 import { sequelize } from "../connection";
 
-const Book = sequelize.define(
-  "Book",
-  {
+interface BookAttributes{
+    name:string,
+    isbn:string
+}
+
+
+
+//
+// const Book = sequelize.define(
+//   "Book",
+//   {
+//     id: {
+//       type: DataTypes.STRING,
+//       primaryKey: true,
+//       allowNull: false,
+//     },
+//     name: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     isbn: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     author_id: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//   },
+//   { timestamps: false }
+// );
+
+class Book extends Model{
+    public id!:string;
+    public name!:string;
+    public isbn!:string;
+}
+Book.init({
     id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      allowNull: false,
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
     },
     name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     isbn: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     author_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-  },
-  { timestamps: false }
-);
+},{sequelize,modelName:"Book",timestamps:false})
+
 
 export { Book };
