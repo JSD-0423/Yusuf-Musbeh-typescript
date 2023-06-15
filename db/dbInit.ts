@@ -1,7 +1,7 @@
 import { Book } from "./models/book";
 import { Author } from "./models/author";
 
-export function dbInit() {
+export async function dbInit() {
   Author.hasMany(Book, {
     foreignKeyConstraint: true,
     foreignKey: "author_id",
@@ -10,6 +10,6 @@ export function dbInit() {
     foreignKeyConstraint: true,
     foreignKey: "author_id",
   });
-  Book.sync();
-  Author.sync();
+  await Book.sync();
+  await Author.sync();
 }

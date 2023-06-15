@@ -7,9 +7,10 @@ const app: Express = express();
 app.use(express.json());
 app.use(userRouter);
 
-dbInit();
-authenticateConnection().then((e) => {
-  app.listen(3000, "localhost", () => {
-    console.log("Server now is working on port 3000");
+dbInit().then((e) => {
+  authenticateConnection().then((e) => {
+    app.listen(3000, "localhost", () => {
+      console.log("Server now is working on port 3000");
+    });
   });
 });
