@@ -14,14 +14,8 @@ const getBooks = async (
   next: NextFunction
 ) => {
   try {
-    let query: any = request.query.name || "";
     const books = await Book.findAll();
-    console.log(books);
-    const filteredBooks = books.filter((book: any) =>
-      book.name.toLowerCase().startsWith(query)
-    );
-    console.log(filteredBooks);
-    return response.status(200).json({ statusCode: 200, books: filteredBooks });
+    return response.status(200).json({ statusCode: 200, books: books });
   } catch (e) {
     console.error(e);
     response
@@ -36,6 +30,10 @@ const getBookById = async (
 ) => {
   const id: string = request.params.id;
   const book = await Book.findByPk(id);
+  if (!book)
+    return response
+      .status(400)
+      .json({ statusCode: 400, errors: ["Book does not exist with this ID"] });
   response.status(200).json(book);
 };
 
@@ -50,11 +48,11 @@ const putBooks = async (
   if (!book)
     return response
       .status(400)
-      .json({ statusCode: 400, error: "Book does not exist" });
+      .json({ statusCode: 400, errors: ["Book does not exist with this ID"] });
 
   book.name = name || book.name;
   book.isbn = isbn || book.isbn;
-  book = await book.save();
+  await book.save();
   return response.status(200).json({
     statusCode: 200,
     message: "Book Updated Successfully",
@@ -68,11 +66,6 @@ const postBooks = async (
   next: NextFunction
 ) => {
   const { name, isbn, authorId } = request.body;
-  const author = await Author.findByPk(authorId);
-  if (!author)
-    return response
-      .status(400)
-      .json({ status: 400, error: "Author does not exist with this ID" });
   const book = await Book.create({
     id: crypto.randomUUID(),
     name: name,
