@@ -7,8 +7,8 @@ const app: Express = express();
 app.use(express.json());
 app.use(userRouter);
 
-dbInit().then((e) => {
-  authenticateConnection().then((e) => {
+authenticateConnection().then((e) => {
+  dbInit().then((e) => {
     app.listen(3000, "localhost", () => {
       console.log("Server now is working on port 3000");
     });
