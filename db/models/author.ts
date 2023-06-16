@@ -1,8 +1,12 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../connection";
 
-const Author = sequelize.define(
-  "Author",
+class Author extends Model {
+  public id!: string;
+  public name!: string;
+}
+
+Author.init(
   {
     id: {
       type: DataTypes.STRING,
@@ -14,7 +18,7 @@ const Author = sequelize.define(
       allowNull: false,
     },
   },
-  { timestamps: false }
+  { sequelize, modelName: "Author", timestamps: false }
 );
 
 export { Author };

@@ -11,7 +11,6 @@ import {
   handleErrors,
   postBookValidationSchema,
 } from "../middlewares/validationMiddleware";
-import Joi from "joi";
 const router: Router = Router();
 router.get("/books", getBooks);
 router.get("/books/:id", getBookById);
