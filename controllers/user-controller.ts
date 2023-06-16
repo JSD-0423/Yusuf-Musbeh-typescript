@@ -36,7 +36,7 @@ const getBookById = async (
         statusCode: 400,
         errors: ["Book does not exist with this ID"],
       });
-    response.status(200).json(book);
+    response.status(200).json({ statusCode: 200, book: book });
   } catch (e) {
     console.error(e);
     response
@@ -90,7 +90,11 @@ const postBooks = async (
       isbn: isbn,
       author_id: authorId,
     });
-    response.json({ book });
+    response.status(200).json({
+      statusCode: 200,
+      message: "Book created Successfully",
+      book: book,
+    });
   } catch (e) {
     console.error(e);
     response
@@ -108,12 +112,10 @@ const deleteBooks = async (
   try {
     const book = await Book.findByPk(id);
     if (!book)
-      return response
-        .status(400)
-        .json({
-          statusCode: 400,
-          errors: ["Book does not exist with this ID"],
-        });
+      return response.status(400).json({
+        statusCode: 400,
+        errors: ["Book does not exist with this ID"],
+      });
     const result = await book.destroy();
     console.log(result);
     response
