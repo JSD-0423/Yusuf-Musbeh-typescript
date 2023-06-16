@@ -29,12 +29,20 @@ const getBookById = async (
   next: NextFunction
 ) => {
   const id: string = request.params.id;
-  const book = await Book.findByPk(id);
-  if (!book)
-    return response
-      .status(400)
-      .json({ statusCode: 400, errors: ["Book does not exist with this ID"] });
-  response.status(200).json(book);
+  try {
+    const book = await Book.findByPk(id);
+    if (!book)
+      return response.status(400).json({
+        statusCode: 400,
+        errors: ["Book does not exist with this ID"],
+      });
+    response.status(200).json(book);
+  } catch (e) {
+    console.error(e);
+    response
+      .status(500)
+      .json({ statusCode: 500, errors: ["Internal server error"] });
+  }
 };
 
 const putBooks = async (
@@ -44,20 +52,29 @@ const putBooks = async (
 ) => {
   const id = request.params.id;
   const { name, isbn } = request.body;
-  let book = await Book.findByPk(id);
-  if (!book)
-    return response
-      .status(400)
-      .json({ statusCode: 400, errors: ["Book does not exist with this ID"] });
 
-  book.name = name || book.name;
-  book.isbn = isbn || book.isbn;
-  await book.save();
-  return response.status(200).json({
-    statusCode: 200,
-    message: "Book Updated Successfully",
-    book: book,
-  });
+  try {
+    let book = await Book.findByPk(id);
+    if (!book)
+      return response.status(400).json({
+        statusCode: 400,
+        errors: ["Book does not exist with this ID"],
+      });
+
+    book.name = name || book.name;
+    book.isbn = isbn || book.isbn;
+    await book.save();
+    return response.status(200).json({
+      statusCode: 200,
+      message: "Book Updated Successfully",
+      book: book,
+    });
+  } catch (e) {
+    console.error(e);
+    response
+      .status(500)
+      .json({ statusCode: 500, errors: ["Internal server error"] });
+  }
 };
 
 const postBooks = async (
@@ -66,13 +83,20 @@ const postBooks = async (
   next: NextFunction
 ) => {
   const { name, isbn, authorId } = request.body;
-  const book = await Book.create({
-    id: crypto.randomUUID(),
-    name: name,
-    isbn: isbn,
-    author_id: authorId,
-  });
-  response.json({ book });
+  try {
+    const book = await Book.create({
+      id: crypto.randomUUID(),
+      name: name,
+      isbn: isbn,
+      author_id: authorId,
+    });
+    response.json({ book });
+  } catch (e) {
+    console.error(e);
+    response
+      .status(500)
+      .json({ statusCode: 500, errors: ["Internal server error"] });
+  }
 };
 
 const deleteBooks = async (
@@ -81,15 +105,25 @@ const deleteBooks = async (
   next: NextFunction
 ) => {
   const id = request.params.id;
-  const book = await Book.findByPk(id);
-  if (!book)
-    return response
-      .status(400)
-      .json({ statusCode: 400, error: "Book does not exist" });
-  const result = await book.destroy();
-  console.log(result);
-  response
-    .status(200)
-    .json({ statusCode: 200, message: "Book deleted Successfully" });
+  try {
+    const book = await Book.findByPk(id);
+    if (!book)
+      return response
+        .status(400)
+        .json({
+          statusCode: 400,
+          errors: ["Book does not exist with this ID"],
+        });
+    const result = await book.destroy();
+    console.log(result);
+    response
+      .status(200)
+      .json({ statusCode: 200, message: "Book deleted Successfully" });
+  } catch (e) {
+    console.error(e);
+    response
+      .status(500)
+      .json({ statusCode: 500, errors: ["Internal server error"] });
+  }
 };
 export { getBooks, postBooks, getBookById, putBooks, deleteBooks };

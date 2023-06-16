@@ -8,9 +8,16 @@ const postAuthor = async (
   next: NextFunction
 ) => {
   const { name } = request.body;
-  const id: string = crypto.randomUUID();
-  const author: Author = await Author.create({ id: id, name: name });
-  response.status(200).json({ statusCode: 200, author: author });
+  try {
+    const id: string = crypto.randomUUID();
+    const author: Author = await Author.create({ id: id, name: name });
+    response.status(200).json({ statusCode: 200, author: author });
+  } catch (e) {
+    console.error(e);
+    response
+      .status(500)
+      .json({ statusCode: 500, errors: ["Internal server error"] });
+  }
 };
 
 export { postAuthor };
