@@ -51,4 +51,13 @@ const postBookValidationSchema: Schema = {
   },
 };
 
-export { postBookValidationSchema, handleErrors };
+const postAuthorsValidationSchema: Schema = {
+  name: {
+    in: "body",
+    notEmpty: {
+      errorMessage: "Author name is required",
+    },
+  },
+};
+
+export { postBookValidationSchema, postAuthorsValidationSchema, handleErrors };
