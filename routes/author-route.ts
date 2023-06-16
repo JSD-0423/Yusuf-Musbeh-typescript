@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { postAuthor } from "../controllers/author-controller";
+import { postAuthors } from "../controllers/author-controller";
 import {
   handleErrors,
   postAuthorsValidationSchema,
@@ -11,6 +11,6 @@ router.post(
   "/authors",
   checkSchema(postAuthorsValidationSchema),
   handleErrors,
-  postAuthor
+  postAuthors
 );
 export { router };
