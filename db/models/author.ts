@@ -18,7 +18,7 @@ Author.init(
       allowNull: false,
     },
   },
-  { sequelize, modelName: "Author", timestamps: false }
+  { sequelize, modelName: "Author" }
 );
 
 export { Author };
